@@ -9,10 +9,28 @@ import { BusController } from './bus/bus.controller';
 import { BusModule } from './bus/bus.module';
 import { PassengerController } from './passenger/passenger.controller';
 import { PassengerModule } from './passenger/passenger.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { typeORMConfig } from './util/typeorm.config';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [UserModule, AuthModule, BusModule, PassengerModule],
-  controllers: [AppController, UserController, AuthController, BusController, PassengerController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    UserModule, 
+    AuthModule, 
+    BusModule, 
+    PassengerModule,
+    TypeOrmModule.forRoot(typeORMConfig)
+  ],
+  controllers: [
+    AppController, 
+    UserController, 
+    AuthController, 
+    BusController, 
+    PassengerController
+  ],
+  providers: [
+    AppService
+  ],
 })
 export class AppModule {}
