@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common';
 import { BusService } from './bus.service';
 
 @Module({
-  providers: [BusService]
+  imports: [],
+  controllers: [],
+  providers: [BusService],
+  exports: [BusService],
 })
 export class BusModule {}

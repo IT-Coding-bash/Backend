@@ -1,11 +1,14 @@
 import { Get } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthService } from './auth.service';
 
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-    constructor() {}
+    constructor(
+        private readonly authService: AuthService,
+    ) {}
 
     @ApiOperation({ summary: '로그인' })
     @ApiCreatedResponse({ description: '로그인' })

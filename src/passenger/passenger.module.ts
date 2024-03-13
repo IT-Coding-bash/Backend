@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common';
 import { PassengerService } from './passenger.service';
 
 @Module({
-  providers: [PassengerService]
+  imports: [],
+  controllers: [],
+  providers: [PassengerService],
+  exports: [PassengerService],
 })
 export class PassengerModule {}

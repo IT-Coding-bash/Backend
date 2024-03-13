@@ -1,11 +1,14 @@
 import { Get } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { BusService } from './bus.service';
 
 @ApiTags('Bus')
 @Controller('bus')
 export class BusController {
-    constructor() {}
+    constructor(
+        private readonly busService: BusService,
+    ) {}
 
     @ApiOperation({ summary: '버스노선 검색' })
     @ApiCreatedResponse({ description: '버스노선 검색' })

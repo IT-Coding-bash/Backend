@@ -2,11 +2,14 @@ import { Get } from '@nestjs/common';
 import { Post } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { PassengerService } from './passenger.service';
 
 @ApiTags('Passenger')
 @Controller('passenger')
 export class PassengerController {
-    constructor() {}
+    constructor(
+        private readonly passengerService: PassengerService,
+    ) {}
 
     @ApiOperation({ summary: '가까운 버스정류장 조회' })
     @ApiCreatedResponse({ description: '주변 버스정류장 조회' })
@@ -17,8 +20,8 @@ export class PassengerController {
 
     @ApiOperation({ summary: '버스정류장 도착정보 조회' })
     @ApiCreatedResponse({ description: '버스정류장 도착정보 조회' })
-    @Get('/busstop/arrival')
-    async getBusArrivalInfo() {
+    @Get('/busstop/arrival/:id')
+    async getBusArrivalInfo(id: string) {
         return 'Bus Arrival Info';
     }
 
@@ -38,8 +41,8 @@ export class PassengerController {
 
     @ApiOperation({ summary: '탑승 정보 전송' })
     @ApiCreatedResponse({ description: '탑승 정보 전송' })
-    @Post('/busstop/board')
-    async boardBus() {
+    @Post('/busstop/board/:id')
+    async boardBus(id: string) {
         return 'Board Bus';
     }
 
