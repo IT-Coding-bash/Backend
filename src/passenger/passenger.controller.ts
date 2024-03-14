@@ -15,35 +15,35 @@ export class PassengerController {
     @ApiCreatedResponse({ description: '주변 버스정류장 조회' })
     @Get('/busstop')
     async getnearbyBusStop() {
-        return 'Hello BusStop';
+        return await this.passengerService.getnearbyBusStop();
     }
 
     @ApiOperation({ summary: '버스정류장 도착정보 조회' })
     @ApiCreatedResponse({ description: '버스정류장 도착정보 조회' })
     @Get('/busstop/arrival/:id')
     async getBusArrivalInfo(id: string) {
-        return 'Bus Arrival Info';
+        return await this.passengerService.getBusArrivalInfo(id);
     }
 
     @ApiOperation({ summary: '버스정류장 검색' })
     @ApiCreatedResponse({ description: '버스정류장 검색' })
     @Get('/busstop/search')
     async searchBusStop() {
-        return 'BusStop Search';
+        return await this.passengerService.searchBusStop();
     }
 
     @ApiOperation({ summary: '버스노선 검색' })
     @ApiCreatedResponse({ description: '버스노선 검색' })
     @Get('/busline/search')
     async searchBusLine() {
-        return 'BusLine Search';
+        return await this.passengerService.searchBusLine();
     }
 
     @ApiOperation({ summary: '탑승 정보 전송' })
     @ApiCreatedResponse({ description: '탑승 정보 전송' })
     @Post('/busstop/board/:id')
-    async boardBus(id: string) {
-        return 'Board Bus';
+    async boardBus(id: string, ptype: string) {
+        return await this.passengerService.boardBus(id, ptype);
     }
 
 }
