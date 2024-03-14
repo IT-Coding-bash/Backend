@@ -20,7 +20,7 @@ export class BusController {
     @ApiOperation({ summary: '버스 정류장 탑승 검색'})
     @ApiCreatedResponse({ description: '버스 정류장 탑승 검색'})
     @Get('/busstop/board')
-    async searchBusStop() {
+    async getBusStop() {
         return 'BusStop Search';
     }
 }

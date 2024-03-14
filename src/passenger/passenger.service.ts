@@ -4,7 +4,7 @@ import { BusStopRepository } from './entities/busstop.repository';
 @Injectable()
 export class PassengerService {
     constructor(
-        private readonly busstopEntity: BusStopRepository
+        private busstopEntity: BusStopRepository
     ) {}
 
     getnearbyBusStop() {
