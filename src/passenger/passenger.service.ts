@@ -1,9 +1,11 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { BusStopRepository } from './entities/busstop.repository';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class PassengerService {
     constructor(
+        @InjectRepository(BusStopRepository)
         private busstopEntity: BusStopRepository
     ) {}
 
