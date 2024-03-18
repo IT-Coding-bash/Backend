@@ -1,13 +1,18 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { getBusStopId } from 'src/lib/businfo';
 import { BusStopRepository } from 'src/passenger/entities/busstop.repository';
 
 @Injectable()
 export class BusService {
     constructor(
         @InjectRepository(BusStopRepository)
-        private busstopEntity: BusStopRepository
+        private busstopEntity: BusStopRepository,
     ) {}
+
+    async searchBusLine(number: string) {
+        return getBusStopId(number);
+    }
 
     async getBusStop(id : string) {
         let busStopInfo = await this.busstopEntity.find({
@@ -26,6 +31,7 @@ export class BusService {
                 busstop_id: id
             }
         });
+        
         if(!busstop) {
             return new HttpException(`BusStop with ID ${id} not found.`, 404);
         }

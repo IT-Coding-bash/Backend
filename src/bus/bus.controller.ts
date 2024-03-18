@@ -14,7 +14,7 @@ export class BusController {
     @ApiCreatedResponse({ description: '버스노선 검색' })
     @Get('/busline/search')
     async searchBusLine() {
-        return 'BusLine Search';
+        return await this.busService.searchBusLine('남영역');
     }
 
     @ApiOperation({ summary: '버스 정류장 탑승 검색'})
