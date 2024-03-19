@@ -1,7 +1,7 @@
-import { Get } from '@nestjs/common';
+import { Get, Query, Req } from '@nestjs/common';
 import { Post } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { PassengerService } from './passenger.service';
 
 @ApiTags('Passenger')
@@ -13,9 +13,11 @@ export class PassengerController {
 
     @ApiOperation({ summary: '가까운 버스정류장 조회' })
     @ApiCreatedResponse({ description: '주변 버스정류장 조회' })
+    @ApiParam({ name: 'x', required: true, description: 'x좌표' })
+    @ApiParam({ name: 'y', required: true, description: 'y좌표' })
     @Get('/busstop')
-    async getnearbyBusStop() {
-        return await this.passengerService.getnearbyBusStop();
+    async getnearbyBusStop(@Req() req: any){
+        return await this.passengerService.getnearbyBusStop(req.query.x, req.query.y);
     }
 
     @ApiOperation({ summary: '버스정류장 도착정보 조회' })
@@ -44,6 +46,13 @@ export class PassengerController {
     @Post('/busstop/board/:id')
     async boardBus(id: string, ptype: string) {
         return await this.passengerService.boardBus(id, ptype);
+    }
+
+    @ApiOperation({ summary: '하차 정보 전송' })
+    @ApiCreatedResponse({ description: '하차 정보 전송' })
+    @Post('/busstop/leave/:id')
+    async leaveBus(id: string) {
+        return await this.passengerService.leaveBus(id);
     }
 
 }

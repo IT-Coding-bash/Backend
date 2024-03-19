@@ -3,9 +3,9 @@ import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('user')
 export class UserEntity {
-    @ApiProperty( { example: 'op@ye0ngjae.com' } )
+    @ApiProperty( { example: '19292' } )
     @PrimaryColumn()
-    id: string;
+    id: Number;
 
     @ApiProperty( { example: 'password' } )
     @Column()
@@ -22,4 +22,8 @@ export class UserEntity {
     @ApiProperty( { example: '없음' } )
     @Column()
     refreshToken: string;
+
+    @ApiProperty( { example: 'kakao'})
+    @Column()
+    provider: string;
 }
