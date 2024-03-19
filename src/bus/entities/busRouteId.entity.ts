@@ -8,7 +8,7 @@ import { Column, Entity, PrimaryColumn } from "typeorm";
 export class BusRouteId {
     @ApiProperty( { example: '79' } )
     @Column()
-    busRouteId: string;
+    busRouteNumber: string;
 
     @ApiProperty( { example: '100100578' } )
     @PrimaryColumn()
