@@ -4,8 +4,10 @@ import { AuthController } from './auth.controller';
 import { UserService } from 'src/user/user.service';
 import { UserEntity } from 'src/user/entities/userEntity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
+import { KakaoStrategy } from './strategies/kakao.strategy';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import { ConfigModule } from '@nestjs/config';
     AuthService, 
     UserService, 
     UserEntity,
+    KakaoStrategy,
+    JwtStrategy
   ],
   exports: [AuthService]
 })
