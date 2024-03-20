@@ -75,7 +75,7 @@ export class AuthController {
     @UseGuards(AuthGuard('jwt'))
     @Get('/test')
     async test(@Req() req: Request) {
-        console.log(req.user.userId)
+        console.log(req.user.userId) //debugging
         return req.user;
     }
 }

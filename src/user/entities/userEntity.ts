@@ -1,29 +1,33 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn } from "typeorm";
 
 @Entity('user')
 export class UserEntity {
     @ApiProperty( { example: '19292' } )
-    @PrimaryColumn() nv 
+    @PrimaryColumn()
     id: string;
 
+    @ApiProperty( { example: '김현수' } )
+    @Column({type: 'varchar', length: 50, nullable: true})
+    name: string;
+
     @ApiProperty( { example: 'password' } )
-    @Column()
+    @Column({type: 'varchar', length: 100, nullable: true})
     password: string;
 
     @ApiProperty( { example: '버스' } )
-    @Column()
+    @Column({type: 'varchar', length: 100, nullable: true})
     type: string;
 
     @ApiProperty( { example: '79' } )
-    @Column()
+    @Column({type: 'varchar', length: 100, nullable: true})
     value: string;
 
     @ApiProperty( { example: '없음' } )
-    @Column()
+    @Column({type: 'varchar', length: 300, nullable: true})
     refreshToken: string;
 
     @ApiProperty( { example: 'kakao'})
-    @Column()
+    @Column({type: 'varchar', length: 100, nullable: true})
     provider: string;
 }

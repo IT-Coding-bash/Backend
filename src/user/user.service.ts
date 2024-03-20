@@ -22,9 +22,10 @@ export class UserService {
         return user;
     }
 
-    async createUser(kakaoId: string) {
+    async createUser(kakaoId: string, name: string) {
         const user = new UserEntity();
         user.id = kakaoId;
+        user.name = name;
         user.provider = 'kakao';
 
         await this.entityManager.save(user);
