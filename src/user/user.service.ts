@@ -1,7 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/userEntity';
-import { getRepository } from 'typeorm';
 
 @Injectable()
 export class UserService {
@@ -11,8 +10,10 @@ export class UserService {
         private userEntity: UserEntity
     ) {}
 
-    async findById(id: Number) {
-        const user = this.entityManager.findOne(UserEntity, { id });
+    async findById(id: string) {
+        const user = await this.entityManager.findOne(UserEntity, 
+            { where: { id:id } }
+        );
 
         if(!user) {
             return new HttpException(`User with ID ${id} not found.`, 404);
@@ -21,7 +22,7 @@ export class UserService {
         return user;
     }
 
-    async createUser(kakaoId: Number) {
+    async createUser(kakaoId: string) {
         const user = new UserEntity();
         user.id = kakaoId;
         user.provider = 'kakao';
@@ -31,6 +32,15 @@ export class UserService {
         return user;
     }
 
-
+    async findByRefreshToken(refreshToken: string) {
+        const user = this.entityManager.findOne(UserEntity,
+            { refreshToken: refreshToken });
+        
+        if(!user) {
+            return new HttpException('User not found.', 404);
+        }
+        
+        return user;
+    }
 
 }

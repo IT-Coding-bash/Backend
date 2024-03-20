@@ -16,7 +16,7 @@ export class AuthService {
         private jwtService: JwtService
     ) {}
 
-    async getJWT(kakaoId: Number){
+    async getJWT(kakaoId: string){
         const user = await this.kakaoValidateUser(kakaoId);
         const accessToken = await this.generateAccessToken(user);
         const refreshToken = await this.generateRefreshToken(user);
@@ -24,7 +24,7 @@ export class AuthService {
         return { accessToken, refreshToken };
     }
 
-    async kakaoValidateUser(kakaoId: Number): Promise<any> {
+    async kakaoValidateUser(kakaoId: string){
         let user: UserEntity;
         await this.userService.findById(kakaoId);
 
@@ -61,5 +61,46 @@ export class AuthService {
         );
 
         return refreshToken;
+    }
+
+    async refresh(refreshToken: string): Promise<any> {
+        try{
+            const user = await this.userService.findByRefreshToken(refreshToken);
+
+            if(!user){
+                throw new HttpException('Invalid refresh token', HttpStatus.UNAUTHORIZED);
+            }
+
+            const isRefreshTokenValid = await compare(refreshToken, user.refreshToken);
+
+            if(!isRefreshTokenValid){
+                throw new HttpException('Invalid refresh token', HttpStatus.UNAUTHORIZED);
+            }
+
+            const accessToken = await this.generateAccessToken(user);
+
+            return accessToken;
+        } catch (err) {
+            throw new HttpException('Invalid refresh token', HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    async logout(refreshToken: string): Promise<any> {
+        try {
+            const user = await this.userService.findByRefreshToken(refreshToken);
+
+            if(!user){
+                throw new HttpException('Invalid refresh token', HttpStatus.UNAUTHORIZED);
+            }
+
+            await this.entityManager.update(UserEntity,
+                { id: user.id },
+                { refreshToken: null }
+            );
+
+            return 'Logout successful';
+        } catch (err) {
+            throw new HttpException('Invalid refresh token', HttpStatus.UNAUTHORIZED);
+        }
     }
 }

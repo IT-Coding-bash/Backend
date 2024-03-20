@@ -10,7 +10,7 @@ export class KakaoStrategy extends PassportStrategy(Strategy) {
     super({	// 여기 적어준 정보를 가지고 카카오 서버에 POST /oauth/token 요청이 날아갑니다.
       clientID: process.env.KAKAO_CLIENT_ID,
       clientSecret: '',
-      callbackURL: `${process.env.BACKEND_URL}/auth/kakao/callback`,
+      callbackURL: `${process.env.BACKEND_URL}/auth/kakao/`,
     });
   }
 
