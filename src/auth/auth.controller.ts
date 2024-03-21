@@ -1,4 +1,4 @@
-import { Get, HttpCode, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Get, HttpCode, Post, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Controller } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -14,7 +14,7 @@ export class AuthController {
 
     @ApiOperation({ summary: '로그인' })
     @ApiCreatedResponse({ description: '로그인' })
-    @Get('/login')
+    @Post('/login')
     async login() {
         return 'Login';
     }
@@ -75,7 +75,7 @@ export class AuthController {
     @UseGuards(AuthGuard('jwt'))
     @Get('/test')
     async test(@Req() req: Request) {
-        console.log(req.user.userId) //debugging
+        console.log(req.user) //debugging
         return req.user;
     }
 }

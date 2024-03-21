@@ -37,6 +37,9 @@ export class AuthService {
     async generateAccessToken(user: UserEntity): Promise<any> {
         const payload = {
             userId: user.id,
+            name: user.name,
+            type: user.type,
+            value: user.value
         }
 
         return this.jwtService.sign(payload);
@@ -45,6 +48,9 @@ export class AuthService {
     async generateRefreshToken(user: UserEntity): Promise<any> {
         const payload = {
             userId: user.id,
+            name: user.name,
+            type: user.type,
+            value: user.value
         }
 
         const refreshToken = this.jwtService.sign(payload, {

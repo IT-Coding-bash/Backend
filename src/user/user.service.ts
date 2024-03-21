@@ -26,6 +26,8 @@ export class UserService {
         const user = new UserEntity();
         user.id = kakaoId;
         user.name = name;
+        user.type = 'kakao';
+        user.value = 'kakao';
         user.provider = 'kakao';
 
         await this.entityManager.save(user);

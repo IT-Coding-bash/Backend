@@ -23,6 +23,11 @@
     }
 
     async validate(payload) {
-      return { userId: payload.userId };
+      return { 
+        userId: payload.userId,
+        name: payload.name,
+        type: payload.type,
+        value: payload.value
+      };
     }
   }

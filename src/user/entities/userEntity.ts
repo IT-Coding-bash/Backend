@@ -8,7 +8,7 @@ export class UserEntity {
     id: string;
 
     @ApiProperty( { example: '김현수' } )
-    @Column({type: 'varchar', length: 50, nullable: true})
+    @Column({type: 'varchar', length: 50, nullable: false})
     name: string;
 
     @ApiProperty( { example: 'password' } )
@@ -16,11 +16,11 @@ export class UserEntity {
     password: string;
 
     @ApiProperty( { example: '버스' } )
-    @Column({type: 'varchar', length: 100, nullable: true})
+    @Column({type: 'varchar', length: 100, nullable: false})
     type: string;
 
     @ApiProperty( { example: '79' } )
-    @Column({type: 'varchar', length: 100, nullable: true})
+    @Column({type: 'varchar', length: 100, nullable: false})
     value: string;
 
     @ApiProperty( { example: '없음' } )
@@ -28,6 +28,6 @@ export class UserEntity {
     refreshToken: string;
 
     @ApiProperty( { example: 'kakao'})
-    @Column({type: 'varchar', length: 100, nullable: true})
+    @Column({type: 'varchar', length: 100, nullable: false})
     provider: string;
 }

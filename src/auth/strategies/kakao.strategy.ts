@@ -1,12 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
+import { InjectEntityManager } from '@nestjs/typeorm';
 import { Profile, Strategy } from 'passport-kakao';
+import { UserEntity } from 'src/user/entities/userEntity';
+import { EntityManager } from 'typeorm';
 
 ConfigModule.forRoot();
 @Injectable()
 export class KakaoStrategy extends PassportStrategy(Strategy) {
-  constructor() {
+  constructor(
+    @InjectEntityManager()
+    private entityManager,
+  ) {
     super({	// 여기 적어준 정보를 가지고 카카오 서버에 POST /oauth/token 요청이 날아갑니다.
       clientID: process.env.KAKAO_CLIENT_ID,
       clientSecret: '',
@@ -22,6 +28,7 @@ export class KakaoStrategy extends PassportStrategy(Strategy) {
   ) {
     try {
       const { _json } = profile;
+
       const user = {
         kakaoId: _json.id,
         name: _json.kakao_account.profile.nickname,
