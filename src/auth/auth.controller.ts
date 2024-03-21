@@ -40,13 +40,20 @@ export class AuthController {
     @UseGuards(AuthGuard('jwt'))
     @Get('/logout')
     async logout(@Req() req: Request, @Res() res: Response){
-        const refreshToken = req.cookies.refreshToken;
+        const id = req.user.userId;
 
         res.clearCookie('accessToken');
         res.clearCookie('refreshToken');
         res.clearCookie('isLoggedIn');
         
-        return this.authService.logout(refreshToken);
+        try{
+            await this.authService.logout(id);
+        }
+        catch(err){
+            throw new UnauthorizedException();
+        }
+
+        return res.json({ message: 'Logout Success' });
     }
 
     @ApiOperation({ summary: '카카오 토큰 재발급' })

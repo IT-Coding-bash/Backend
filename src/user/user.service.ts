@@ -36,8 +36,9 @@ export class UserService {
     }
 
     async findByRefreshToken(refreshToken: string) {
-        const user = this.entityManager.findOne(UserEntity,
-            { refreshToken: refreshToken });
+        const user = this.entityManager.findOne(UserEntity,{
+             where : {refreshToken: refreshToken} 
+        });
         
         if(!user) {
             return new HttpException('User not found.', 404);

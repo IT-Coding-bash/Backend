@@ -1,6 +1,5 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Redirect } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
-import axios from 'axios';
 import { UserEntity } from 'src/user/entities/userEntity';
 import { UserService } from 'src/user/user.service';
 import { hash, compare } from 'bcrypt';
@@ -58,7 +57,7 @@ export class AuthService {
             expiresIn: '7d' 
         });
 
-        const saltOrRounds = 10;
+        const saltOrRounds = Number(process.env.BCRYPT_SALT);
         const hashedRefreshToken = await hash(refreshToken, saltOrRounds);
 
         await this.entityManager.update(UserEntity,
@@ -91,12 +90,12 @@ export class AuthService {
         }
     }
 
-    async logout(refreshToken: string): Promise<any> {
+    async logout(id: string): Promise<any> {
         try {
-            const user = await this.userService.findByRefreshToken(refreshToken);
+            const user = await this.userService.findById(id);
 
             if(!user){
-                throw new HttpException('Invalid refresh token', HttpStatus.UNAUTHORIZED);
+                throw new HttpException('Regresh token Error', HttpStatus.UNAUTHORIZED);
             }
 
             await this.entityManager.update(UserEntity,
@@ -104,7 +103,7 @@ export class AuthService {
                 { refreshToken: null }
             );
 
-            return 'Logout successful';
+            return { message: 'Logout success' };
         } catch (err) {
             throw new HttpException('Invalid refresh token', HttpStatus.UNAUTHORIZED);
         }
