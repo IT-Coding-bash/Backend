@@ -1,8 +1,9 @@
-import { Get, Query, Req } from '@nestjs/common';
+import { Get, Query, Req, UseGuards } from '@nestjs/common';
 import { Post } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { PassengerService } from './passenger.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Passenger')
 @Controller('passenger')
@@ -22,6 +23,7 @@ export class PassengerController {
 
     @ApiOperation({ summary: '버스정류장 도착정보 조회' })
     @ApiCreatedResponse({ description: '버스정류장 도착정보 조회' })
+    @UseGuards(AuthGuard('jwt'))
     @Get('/busstop/arrival/:id')
     async getBusArrivalInfo(id: string) {
         return await this.passengerService.getBusArrivalInfo(id);
@@ -29,6 +31,7 @@ export class PassengerController {
 
     @ApiOperation({ summary: '버스정류장 검색' })
     @ApiCreatedResponse({ description: '버스정류장 검색' })
+    @UseGuards(AuthGuard('jwt'))
     @Get('/busstop/search')
     async searchBusStop() {
         return await this.passengerService.searchBusStop();
@@ -36,6 +39,7 @@ export class PassengerController {
 
     @ApiOperation({ summary: '버스노선 검색' })
     @ApiCreatedResponse({ description: '버스노선 검색' })
+    @UseGuards(AuthGuard('jwt'))
     @Get('/busline/search')
     async searchBusLine() {
         return await this.passengerService.searchBusLine();
@@ -43,6 +47,7 @@ export class PassengerController {
 
     @ApiOperation({ summary: '탑승 정보 전송' })
     @ApiCreatedResponse({ description: '탑승 정보 전송' })
+    @UseGuards(AuthGuard('jwt'))
     @Post('/busstop/board/:id')
     async boardBus(id: string, ptype: string) {
         return await this.passengerService.boardBus(id, ptype);
@@ -50,6 +55,7 @@ export class PassengerController {
 
     @ApiOperation({ summary: '하차 정보 전송' })
     @ApiCreatedResponse({ description: '하차 정보 전송' })
+    @UseGuards(AuthGuard('jwt'))
     @Post('/busstop/leave/:id')
     async leaveBus(id: string) {
         return await this.passengerService.leaveBus(id);
