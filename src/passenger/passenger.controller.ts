@@ -24,7 +24,8 @@ export class PassengerController {
     @ApiOperation({ summary: '버스정류장 도착정보 조회' })
     @ApiCreatedResponse({ description: '버스정류장 도착정보 조회' })
     @UseGuards(AuthGuard('jwt'))
-    @Get('/busstop/arrival/:id')
+    @Get('/busstop/arrival')
+    @ApiParam({ name: 'id', required: true, description: '정류장 ID' })
     async getBusArrivalInfo(id: string) {
         return await this.passengerService.getBusArrivalInfo(id);
     }
@@ -48,7 +49,9 @@ export class PassengerController {
     @ApiOperation({ summary: '탑승 정보 전송' })
     @ApiCreatedResponse({ description: '탑승 정보 전송' })
     @UseGuards(AuthGuard('jwt'))
-    @Post('/busstop/board/:id')
+    @ApiParam({ name: 'id', required: true, description: '정류장 ID' })
+    @ApiParam({ name: 'ptype', required: true, description: '탑승 유형' })
+    @Post('/busstop/board')
     async boardBus(id: string, ptype: string) {
         return await this.passengerService.boardBus(id, ptype);
     }
@@ -56,7 +59,8 @@ export class PassengerController {
     @ApiOperation({ summary: '하차 정보 전송' })
     @ApiCreatedResponse({ description: '하차 정보 전송' })
     @UseGuards(AuthGuard('jwt'))
-    @Post('/busstop/leave/:id')
+    @ApiParam({ name: 'id', required: true, description: '정류장 ID' })
+    @Post('/busstop/leave')
     async leaveBus(id: string) {
         return await this.passengerService.leaveBus(id);
     }

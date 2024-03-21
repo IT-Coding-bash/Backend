@@ -28,7 +28,7 @@ export class AuthService {
         await this.userService.findById(kakaoId);
 
         if(!user){
-            user = await this.userService.createUser(kakaoId, 'kakao'); // 이름을 받아오는 API 귀찮아서 일단 kakao로 대체
+            user = await this.userService.createUser(kakaoId, 'kakaoUser', 'kakao'); // 이름을 받아오는 API 귀찮아서 일단 kakaoUser로 대체
         }
         return user;
     }

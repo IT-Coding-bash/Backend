@@ -22,17 +22,33 @@ export class UserService {
         return user;
     }
 
-    async createUser(kakaoId: string, name: string) {
+    async createUser(kakaoId: string, name: string, provider: string) {
         const user = new UserEntity();
         user.id = kakaoId;
         user.name = name;
-        user.type = 'kakao';
-        user.value = 'kakao';
-        user.provider = 'kakao';
+        user.type = 'default';
+        user.value = 'default';
+        user.provider = provider;
 
         await this.entityManager.save(user);
 
         return user;
+    }
+
+    async updateUser(id:string, type: string, value: string){
+        
+        const user = await this.entityManager.findOne(UserEntity,
+            { where: { id:id } }
+        );
+
+        if(!user) {
+            return new HttpException(`User with ID ${id} not found.`, 404);
+        }
+
+        user.type = type;
+        user.value = value;
+
+        await this.entityManager.save(user);
     }
 
     async findByRefreshToken(refreshToken: string) {
