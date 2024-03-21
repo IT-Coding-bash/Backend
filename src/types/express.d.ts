@@ -6,6 +6,8 @@ declare module 'express' {
     user: {
       kakaoId?: number;
       userId?: Types.ObjectId;
+      type?: string;
+      value?: string;
     };
   }
 }

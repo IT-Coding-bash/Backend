@@ -99,7 +99,7 @@ export class AuthService {
             }
 
             await this.entityManager.update(UserEntity,
-                { id: user.id },
+                { id: id },
                 { refreshToken: null }
             );
 

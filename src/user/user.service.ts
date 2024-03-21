@@ -36,19 +36,23 @@ export class UserService {
     }
 
     async updateUser(id:string, type: string, value: string){
+        const user = await this.entityManager.findOne(UserEntity, {where: {id:id}});
         
-        const user = await this.entityManager.findOne(UserEntity,
-            { where: { id:id } }
-        );
-
-        if(!user) {
+        if(!user){
             return new HttpException(`User with ID ${id} not found.`, 404);
         }
 
-        user.type = type;
-        user.value = value;
+        try{
+            user.type = type;
+            user.value = value;
 
-        await this.entityManager.save(user);
+            console.log(user);
+
+            await this.entityManager.save(user);
+        }
+        catch(err){
+            return new HttpException('Update failed.', 400);
+        }
     }
 
     async findByRefreshToken(refreshToken: string) {

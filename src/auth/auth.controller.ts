@@ -77,12 +77,16 @@ export class AuthController {
           }
     }
 
+    //DEBUGGING
     @ApiOperation({ summary: '로그인 테스트' })
     @ApiCreatedResponse({ description: '로그인 테스트' })
     @UseGuards(AuthGuard('jwt'))
     @Get('/test')
     async test(@Req() req: Request) {
-        console.log(req.user) //debugging
+        console.log(req.user.userId);
+        console.log(req.user.type); 
+        console.log(req.user.value); 
+
         return req.user;
     }
 }
