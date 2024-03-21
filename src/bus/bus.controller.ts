@@ -1,6 +1,6 @@
 import { Get, Post, UseGuards } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { BusService } from './bus.service';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -14,6 +14,7 @@ export class BusController {
     @ApiOperation({ summary: '버스노선 검색' })
     @ApiCreatedResponse({ description: '버스노선 검색' })
     @UseGuards(AuthGuard('jwt'))
+    @ApiParam({ name: 'number', required: true, description: '버스 번호' })
     @Get('/busline/search')
     async searchBusLine() {
         return await this.busService.searchBusLine('남영역');

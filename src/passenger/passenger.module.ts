@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { PassengerService } from './passenger.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BusStopRepository } from './entities/busstop.repository';
+import { BusStopEntity } from './entities/busstop.Entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
-      BusStopRepository
+      BusStopEntity
     ]),
   ],
   controllers: [],

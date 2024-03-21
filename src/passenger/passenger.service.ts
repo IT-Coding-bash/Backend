@@ -1,13 +1,13 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { BusStopRepository } from './entities/busstop.repository';
-import { InjectRepository } from '@nestjs/typeorm';
 import { getNearbyBusStop } from '../lib/businfo';
+import { BusStopEntity } from './entities/busstop.Entity';
+import { InjectEntityManager } from '@nestjs/typeorm';
 
 @Injectable()
 export class PassengerService {
     constructor(
-        @InjectRepository(BusStopRepository)
-        private busstopEntity: BusStopRepository
+        @InjectEntityManager()
+        private entityManager,
     ) {}
 
     getnearbyBusStop(x: string, y: string) {
@@ -27,7 +27,7 @@ export class PassengerService {
     }
 
     async leaveBus(id: string) {
-        let busstop = await this.busstopEntity.findOne({
+        let busstop = await this.entityManager.findOne(BusStopEntity,{
             where: {
                 busstop_id: id
             }
@@ -41,11 +41,11 @@ export class PassengerService {
             busstop.count = 0;
         }
 
-        await this.busstopEntity.save(busstop);
+        await this.entityManager.save(busstop);
     }
 
     async boardBus(id: string, ptype: string) {
-        let busstop = await this.busstopEntity.findOne({
+        let busstop = await this.entityManager.findOne(BusStopEntity,{
             where: {
                 busstop_id: id
             }
@@ -62,6 +62,6 @@ export class PassengerService {
             busstop.type += `, ${ptype}`;
         }
 
-        await this.busstopEntity.save(busstop);
+        await this.entityManager.save(busstop);
     }
 }
