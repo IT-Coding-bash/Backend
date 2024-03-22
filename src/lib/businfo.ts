@@ -1,7 +1,7 @@
 import { ConfigModule } from "@nestjs/config";
 import axios from "axios";
-import { getRepository } from "typeorm";
 import { BusRouteId } from "src/bus/entities/busRouteId.entity";
+import { parseString } from 'xml2js';
 
 ConfigModule.forRoot();
 const APIKEY = process.env.API_KEY;
@@ -17,22 +17,6 @@ async function getBusStopId(name: string): Promise<any>{ // 버스 정류장 이
     console.log(response.data);
 
     return response.data;
-}
-
-async function getBusRouteId(number: string): Promise<any> { // 버스 번호를 받아서 버스 노선 ID를 조회하는 함수
-    const busRouteIdRepository = getRepository(BusRouteId);
-    const busRouteId = await busRouteIdRepository.findOne({ 
-        where: {busRouteNumber: number },
-        select: ["busRouteId"]
-    } as any);
-
-    if(!busRouteId){
-        throw new Error(`BusRouteId with number ${number} not found.`);
-    }
-
-    console.log(busRouteId);
-
-    return busRouteId;
 }
 
 async function getBusInfo(id: string): Promise<any> { // 버스 정류장 ID를 받아서 도착 예정 버스 정보를 조회하는 함수
@@ -89,11 +73,26 @@ async function getLocationInfo(name: string){ //도착지 이름을 받아서 �
     return response.data;
 }
 
+async function getBusRoutebyId(id: string): Promise<any> { // 버스 노선 ID를 받아서 버스 노선 정보를 조회하는 함수
+    const url: string = `${APIURL}rest/busRouteInfo/getStaionByRoute?serviceKey=${APIKEY}&busRouteId=${id}`;
+
+    console.log(url);
+
+    const response = await axios.get(url);
+    if(!response.status){
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    console.log(response.data);
+
+    return response.data;
+}
+
 export {
     getBusStopId,
-    getBusRouteId,
     getBusInfo,
     getLowBusInfo,
     getNearbyBusStop,
-    getLocationInfo
+    getLocationInfo,
+    getBusRoutebyId
 }

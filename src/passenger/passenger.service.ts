@@ -1,7 +1,8 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { getNearbyBusStop } from '../lib/businfo';
+import { getBusStopId, getNearbyBusStop } from '../lib/businfo';
 import { BusStopEntity } from './entities/busstop.Entity';
 import { InjectEntityManager } from '@nestjs/typeorm';
+import { BusRouteId } from 'src/bus/entities/busRouteId.entity';
 
 @Injectable()
 export class PassengerService {
@@ -22,8 +23,17 @@ export class PassengerService {
         return 'BusStop Search';
     }
 
-    searchBusLine() {
-        return 'BusLine Search';
+    async searchBusLine(name: string) { // 버스 노선 이름을 받아서 버스 노선 ID를 조회하는 함수
+        const routeid = await this.entityManager.findOne(BusRouteId, {
+            select: ["routeid"],
+            where: { name: name}
+            });
+
+        if(!routeid){
+            return new HttpException(`BusStop with name ${name} not found.`, 404);
+        }
+
+        return routeid  ;
     }
 
     async leaveBus(id: string) {
@@ -41,7 +51,7 @@ export class PassengerService {
             busstop.count = 0;
         }
 
-        await this.entityManager.save(busstop);
+        await this.entityManager.save(BusStopEntity, busstop);
     }
 
     async boardBus(id: string, ptype: string) {

@@ -1,9 +1,11 @@
 import { Get, Query, Req, UseGuards } from '@nestjs/common';
 import { Post } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { Request } from 'express';
+import { ApiCreatedResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { PassengerService } from './passenger.service';
 import { AuthGuard } from '@nestjs/passport';
+import { getBusRoutebyId } from 'src/lib/businfo';
 
 @ApiTags('Passenger')
 @Controller('passenger')
@@ -41,9 +43,13 @@ export class PassengerController {
     @ApiOperation({ summary: '버스노선 검색' })
     @ApiCreatedResponse({ description: '버스노선 검색' })
     @UseGuards(AuthGuard('jwt'))
+    @ApiQuery({ name: 'name', required: true, description: '버스노선 이름' })
     @Get('/busline/search')
-    async searchBusLine() {
-        return await this.passengerService.searchBusLine();
+    async searchBusLine(@Query('name') name: string){
+
+        const routeid = await this.passengerService.searchBusLine(name);
+
+        return await getBusRoutebyId(routeid.routeid);
     }
 
     @ApiOperation({ summary: '탑승 정보 전송' })
