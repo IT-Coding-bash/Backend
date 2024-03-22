@@ -1,7 +1,7 @@
 import { ConfigModule } from "@nestjs/config";
 import axios from "axios";
 import { BusRouteId } from "src/bus/entities/busRouteId.entity";
-import { parseString } from 'xml2js';
+import { xmlParser } from "./xmlparser";
 
 ConfigModule.forRoot();
 const APIKEY = process.env.API_KEY;
@@ -55,8 +55,6 @@ async function getNearbyBusStop(x: string, y: string): Promise<any> { // x, y �
         throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    console.log(response.data);
-
     return response.data;
 }
 
@@ -76,16 +74,19 @@ async function getLocationInfo(name: string){ //도착지 이름을 받아서 �
 async function getBusRoutebyId(id: string): Promise<any> { // 버스 노선 ID를 받아서 버스 노선 정보를 조회하는 함수
     const url: string = `${APIURL}rest/busRouteInfo/getStaionByRoute?serviceKey=${APIKEY}&busRouteId=${id}`;
 
-    console.log(url);
-
     const response = await axios.get(url);
     if(!response.status){
         throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    console.log(response.data);
+    const data = xmlParser(response.data);
+    //console.log(data);
 
-    return response.data;
+    if(!data){
+        return new Error('API Error')
+    }
+
+    return data;
 }
 
 export {
